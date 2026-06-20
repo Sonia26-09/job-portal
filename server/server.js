@@ -19,8 +19,22 @@ const app = express()
 connectDB()
 await connectCloudinary()
 
+// CORS Configuration
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',')
+  : [
+    "http://localhost:5173",
+    "https://job-portal-full-stack-client.vercel.app"
+  ]
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'token'],
+}))
+
 // Middlewares
-app.use(cors())
 app.use(express.json())
 app.use(clerkMiddleware())
 
